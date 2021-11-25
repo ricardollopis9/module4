@@ -1,36 +1,40 @@
 from datetime import datetime
 from Patient import Patient
 
-patients = []
+class PatientController():
 
-def getPatient():
-    return len(patients)
+    def __init__(self):
+        self.__patients = []
 
-def addPatient(dni, name, surname, birth, phone, email):
-    patients.append(Patient(dni, name, surname, birth, phone, email))
-    
-def delPatient(dni):
-    for pat in patients:
-        if pat.getDni() == dni:
-            patients.remove(pat)
-            return("Patient Removed")
-    return None
+    def getPatient(self):
+        return len(self.__patients)
 
-def getVisits(dni):
-    for pat in patients:
-        if pat.getDni() == dni:
-            return pat.getVisits()
-    return None
+    def addPatient(self, dni, name, surname, birth, phone, email):
+        p = Patient(dni, name, surname, birth, phone, email)
+        self.__patients.append(p)
+        
+    def delPatient(self, dni):
+        for pat in self.__patients:
+            if pat.getDni() == dni:
+                self.__patients.remove(pat)
+                return("Patient Removed")
+        return None
 
-def listPatients():
-    return patients
+    def getVisits(self, dni):
+        for pat in self.__patients:
+            if pat.getDni() == dni:
+                return pat.getVisits()
+        return None
 
-def addAppointment(dni, txt):
-    now = datetime.now()
-    format_date = now.strftime("%d/%m/%Y %H:%M")
-    for pat in patients:
-        if pat.getDni() == dni:
-            pat.setHistory(format_date + " " + txt + "\n")
-            return True
-    return False
-    
+    def listPatients(self):
+        return self.__patients
+
+    def addAppointment(self, dni, txt):
+        now = datetime.now()
+        format_date = now.strftime("%d/%m/%Y %H:%M")
+        for pat in self.__patients:
+            if pat.getDni() == dni:
+                pat.setHistory(format_date + " " + txt + "\n")
+                return True
+        return False
+        

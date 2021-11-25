@@ -1,5 +1,9 @@
 import PatientController
+import HealthCalculator
 import re
+
+ctrl = PatientController.PatientController()
+health = HealthCalculator.HealthCalculator()
 
 def inputDni():
     dniList = "TRWAGMYFPDXBNJZSQVHLCKE"
@@ -55,15 +59,31 @@ def inputEmail():
 def inputBirth():
     while True:
         birth = int(input("Introduce tu fecha de nacimiento: "))
-        if len(birth) != 0:
+        if birth != 0:
             return birth
+        else:
+            return None
+        
+def inputWeight():
+    while True:
+        weight = int(input("Introduce tu peso:"))
+        if weight != 0:
+            return weight
+        else:
+            return None
+        
+def inputHeight():
+    while True:
+        height = float(input("Introduce tu altura:"))
+        if height != 0:
+            return height
         else:
             return None
         
 
 while True:
     print("Matias Polyclinic")
-    print("Currently there are ", PatientController.getPatient(), " registered patients.")
+    print("Currently there are ", ctrl.getPatient(), " registered patients.")
     print("1.- Add Patient")
     print("2.- Delete Patient")
     print("3.- Get patient history")
@@ -87,16 +107,16 @@ while True:
         birth = inputBirth()
         email = inputEmail()
             
-        PatientController.addPatient(dni, name, surname, birth, phone, email)
+        ctrl.addPatient(dni, name, surname, birth, phone, email)
         
     if option == 2:
         dni = inputDni()
         
-        PatientController.delPatient(dni)
+        ctrl.delPatient(dni)
         
     if option == 3:
         dni = inputDni()
-        patients = PatientController.listPatients()
+        patients = ctrl.listPatients()
         
         for pat in patients:
             if pat.getDni() == dni:
@@ -110,7 +130,7 @@ while True:
         
     
     if option == 4:
-        patients = PatientController.listPatients()
+        patients = ctrl.listPatients()
         
         for pat in patients:
             print()
@@ -126,12 +146,21 @@ while True:
         dni = inputDni()
         
         txt = input("Introduce el appointment: ")
-        if PatientController.addAppointment(dni, txt) == True:
+        if ctrl.addAppointment(dni, txt) == True:
             print("Añadido Correctamente!")
         else:
             print("Error al añadir")
             
     if option == 6:
-        print("Give me your height:")
+        dni = inputDni()
+        weight = inputWeight()
+        height = inputHeight()
         
-        print("Give me your weight:")
+        patients = ctrl.listPatients()
+        
+        for p in patients:
+            if p.getDni() == dni:
+                health.addPatient(p.getDni(), p.getName(), p.getSurname(), p.getBirth(), p.getPhone(), p.getEmail(), weight, height)
+                print(health.getHealth(dni))
+        
+        
